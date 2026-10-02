@@ -23,7 +23,7 @@ int main()
     std::ifstream file("..\\playing_field.txt");
     std::string str{};
 
-    int rows{ 0 }, cols{ 0 }, aliveCells{ 0 }, count{ 0 };
+    int rows{ 0 }, cols{ 0 }, aliveCells{ 0 }, count{ 1 };
 
     char** field{ NULL };
     char** fieldNext{ NULL };
@@ -49,11 +49,15 @@ int main()
         printField(field, rows, cols, count, &aliveCells);
         if (aliveCells == 0)
         {
+            count++;
+            printField(field, rows, cols, count, &aliveCells);
             break;
         }
         stepField(fieldNext, field, rows, cols);
         if (cmpField(fieldNext, field, rows, cols))
         {
+            count++;
+            printField(field, rows, cols, count, &aliveCells);
             break;
         }
         copyField(field, fieldNext, rows, cols);
@@ -98,7 +102,7 @@ void fillField(char** field, int rows, int cols, std::ifstream* file)
     std::string strRow{}, strCol{};
     int row{ 0 }, col{ 0 };
 
-    while ((!(*file >> strRow).eof()) && (!(*file >> strCol).eof()))
+    while (*file >> strRow >> strCol)
     {
         row = std::stoi(strRow);
         col = std::stoi(strCol);
